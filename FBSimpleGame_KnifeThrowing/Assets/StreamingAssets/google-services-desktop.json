@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "485073366873",
+    "firebase_url": "https://knifethrowing-8bb08.firebaseio.com",
+    "project_id": "knifethrowing-8bb08",
+    "storage_bucket": "knifethrowing-8bb08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485073366873:android:c9e7c9966eb1996a",
+        "android_client_info": {
+          "package_name": "com.JellySlime.FBSimpleGame_KnifeThrowing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485073366873-jnt4n0vrt2jnk0ifu1oonv2ahtfi14c4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmFUeZrVXcWq4fw-wY614LsntS2OcA6uA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
