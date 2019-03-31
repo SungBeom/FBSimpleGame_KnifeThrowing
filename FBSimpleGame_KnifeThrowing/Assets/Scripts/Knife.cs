@@ -9,7 +9,7 @@ public class Knife : MonoBehaviour
     private bool isOver = false;
     const string appleTag = "Apple";
 
-    float makeDelay = 2.5f;
+    float makeDelay = 3f;
 
     public static Knife instance;
 
@@ -67,5 +67,6 @@ public class Knife : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         PlayManager.Instance.scoreBtn.SetActive(true);
+        GameManager.GM.AddCheck = true;
     }
 }

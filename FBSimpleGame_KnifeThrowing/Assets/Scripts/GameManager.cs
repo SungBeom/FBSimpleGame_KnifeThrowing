@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
     private string nickname;
     public string Nickname
     {
+        get { return nickname; }
         set { nickname = value; }
     }
 
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Task complete.");
                 DataSnapshot snapshot = task.Result;
                 scores = snapshot.Value as Dictionary<string, object>;
+                Dictionary<string, int> d = new Dictionary<string, int>();
             }
         });
     }
