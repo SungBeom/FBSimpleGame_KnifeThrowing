@@ -80,33 +80,53 @@ public class GameManager : MonoBehaviour
         set { addCheck = value; }
     }
 
+    private Dictionary<string, object> scores = new Dictionary<string, object>();
+    public Dictionary<string, object> Scores
+    {
+        get { return scores; }
+    }
+
     public void AddScore()
     {
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference("Score");
 
         reference.RunTransaction(AddScoreTransaction).ContinueWith(task =>
         {
             if (task.Exception != null)
                 Debug.Log(task.Exception.ToString());
             else if (task.IsCompleted)
+            {
                 Debug.Log("Transaction complete.");
+                GetScore();
+            }
         });
     }
 
     TransactionResult AddScoreTransaction(MutableData mutableData)
     {
-        List<object> datas = mutableData.Value as List<object>;
+        Dictionary<string, object> datas = mutableData.Value as Dictionary<string, object>;
+        if (datas == null) datas = new Dictionary<string, object>();
 
-        if (datas == null)
-        {
-            datas = new List<object>();
-        }
-
-        Dictionary<string, object> newData = new Dictionary<string, object>();
-        newData[nickname] = score;
-        datas.Add(newData);
+        datas[nickname] = score;
 
         mutableData.Value = datas;
         return TransactionResult.Success(mutableData);
+    }
+
+    public void GetScore()
+    {
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference("Score");
+
+        reference.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+                Debug.Log(task.Exception.ToString());
+            else if (task.IsCompleted)
+            {
+                Debug.Log("Task complete.");
+                DataSnapshot snapshot = task.Result;
+                scores = snapshot.Value as Dictionary<string, object>;
+            }
+        });
     }
 }

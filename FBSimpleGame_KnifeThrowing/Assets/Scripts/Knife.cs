@@ -5,10 +5,11 @@ using UnityEngine;
 public class Knife : MonoBehaviour
 {
     public float throwPower = 400f;
-    public float makeDelay = 1f;
     private Rigidbody2D rb2d;
     private bool isOver = false;
     const string appleTag = "Apple";
+
+    float makeDelay = 2.5f;
 
     public static Knife instance;
 
