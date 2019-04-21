@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class CreateScoreboard : MonoBehaviour
 {
+    public Text newRecord;
+    public Text currentScore;
+
     public float scoreHeight = 105f;
-    int fontMaxSize = 200;
 
     void Start()
     {
@@ -15,7 +17,12 @@ public class CreateScoreboard : MonoBehaviour
            new Vector2(transform.GetComponent<RectTransform>().sizeDelta.x,
            GameManager.GM.Scores.Count * scoreHeight);
 
+        if (GameManager.GM.NewRecord) newRecord.gameObject.SetActive(true);
+        currentScore.text = GameManager.GM.Nickname + "'s Score : " + GameManager.GM.Score;
+
         int i = 0;
+        int ranking = 0;
+        KeyValuePair<string, object> tempPair = new KeyValuePair<string, object>("", 0);
         foreach (KeyValuePair<string, object> pair in GameManager.GM.Scores.OrderByDescending(index => index.Value))
         {
             GameObject scoreObj = new GameObject("Score" + ++i);
@@ -44,11 +51,11 @@ public class CreateScoreboard : MonoBehaviour
             rank.layer = LayerMask.NameToLayer("UI");
 
             Text rankText = rank.AddComponent<Text>();
-            rankText.text = " " + i.ToString();
+            if (!tempPair.Value.ToString().Equals(pair.Value.ToString())) ranking++;
+            rankText.text = " " + ranking.ToString();
             rankText.font = Font.CreateDynamicFontFromOSFont("Arial", 0);
             rankText.alignment = TextAnchor.MiddleLeft;
             rankText.resizeTextForBestFit = true;
-            //rankText.resizeTextMaxSize = 200;
             rankText.color = Color.black;
 
             GameObject nickname = new GameObject("Nickname");
@@ -59,7 +66,6 @@ public class CreateScoreboard : MonoBehaviour
             nicknameText.font = Font.CreateDynamicFontFromOSFont("Arial", 0);
             nicknameText.alignment = TextAnchor.MiddleLeft;
             nicknameText.resizeTextForBestFit = true;
-            //nicknameText.resizeTextMaxSize = 200;
             nicknameText.color = Color.black;
 
             GameObject score = new GameObject("Score");
@@ -70,7 +76,6 @@ public class CreateScoreboard : MonoBehaviour
             scoreText.font = Font.CreateDynamicFontFromOSFont("Arial", 0);
             scoreText.alignment = TextAnchor.MiddleRight;
             scoreText.resizeTextForBestFit = true;
-            //scoreText.resizeTextMaxSize = 200;
             scoreText.color = Color.black;
 
             rank.transform.SetParent(scoreObj.transform, false);
@@ -95,6 +100,8 @@ public class CreateScoreboard : MonoBehaviour
             strt.anchorMin = new Vector2(0.8f, 0f);
             strt.anchorMax = Vector2.one;
             strt.sizeDelta = Vector2.zero;
+
+            tempPair = pair;
         }
     }
 }

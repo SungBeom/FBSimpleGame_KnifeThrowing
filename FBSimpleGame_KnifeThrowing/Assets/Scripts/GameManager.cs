@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
     private int score;
     public int Score
     {
+        get { return score; }
         set { score = value; }
     }
 
@@ -79,6 +80,12 @@ public class GameManager : MonoBehaviour
     {
         get { return addCheck; }
         set { addCheck = value; }
+    }
+
+    private bool newRecord = false;
+    public bool NewRecord
+    {
+        get { return newRecord; }
     }
 
     private Dictionary<string, object> scores = new Dictionary<string, object>();
@@ -108,7 +115,57 @@ public class GameManager : MonoBehaviour
         Dictionary<string, object> datas = mutableData.Value as Dictionary<string, object>;
         if (datas == null) datas = new Dictionary<string, object>();
 
-        datas[nickname] = score;
+        bool firstTry = true;
+        newRecord = false;
+        foreach (KeyValuePair<string, object> data in datas)
+        {
+            if (data.Key.Equals(nickname))
+            {
+                firstTry = false;
+                int maxScore;
+                int.TryParse(data.Value.ToString(), out maxScore);
+
+                if (maxScore < score)
+                {
+                    newRecord = true;
+                    datas[nickname] = score;
+                }
+
+                break;
+            }
+        }
+        if(firstTry)
+        {
+            newRecord = true;
+            datas[nickname] = score;
+        }
+
+        //string maxScore = datas[nickname].ToString();
+        //Debug.Log(maxScore);
+
+        //foreach (KeyValuePair<string, object> data in datas)
+        //    if (data.Key.Equals(nickname) && (int)data.Value < score)
+        //    {
+        //        datas[nickname] = score;
+        //        break;
+        //    }
+
+        //foreach(KeyValuePair<string, object> data in datas)
+        //{
+        //    Debug.Log(data.Key + ":" + data.Value);
+        //}
+
+        //if (datas.ContainsKey(nickname))
+        //{
+        //    object maxScore = datas[nickname];
+        //    if ((int)maxScore < score)
+        //        datas[nickname] = score;
+        //}
+
+        //int maxScore = (int)datas[nickname];
+        //Debug.Log(maxScore);
+        //if ((int)datas[nickname] < score) datas[nickname] = score;
+        //datas[nickname] = score;
 
         mutableData.Value = datas;
         return TransactionResult.Success(mutableData);
